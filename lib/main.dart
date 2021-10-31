@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:movie_app/screens/now_playing.dart';
-import 'package:movie_app/screens/top_rated.dart';
-import 'package:movie_app/widgets/bottom_app_bar.dart';
+import 'package:movie_app/widgets/home_page.dart';
 
 void main() {
   runApp(MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Bottom Navigation",
-      home: BottomNavigation()));
+      home: HomePage()));
 }
 
 // popular movie api

@@ -46,12 +46,10 @@ class _TopRatedState extends State<TopRated> {
         : ListView.builder(
             itemCount: MoviesList.length,
             itemBuilder: (context, movie) {
-              return movieCard(
-                MoviesList[movie]['poster_path'],
-                MoviesList[movie]['original_title'],
-                MoviesList[movie]['overview'],
-                MoviesList[movie]['id'],
-              );
+             return  MovieCard(imgUrl:  MoviesList[movie]['poster_path'],
+                  title: MoviesList[movie]['original_title'],
+                  desc: MoviesList[movie]['overview']
+                  , id:  MoviesList[movie]['id']);
             });
   }
 }
