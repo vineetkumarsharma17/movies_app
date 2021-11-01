@@ -16,6 +16,7 @@ class _HomePageState extends State<HomePage> {
   List NowPlayingList = [],TopRatedList = [];
   List BackupNowPlayingList = [],BackupTopRatedList = [];
   bool isLoading = true;
+  TextEditingController searchController=TextEditingController();
   String query='';
   int _selectedItem = 0;
   bool is_searching=true;
@@ -33,6 +34,7 @@ class _HomePageState extends State<HomePage> {
           backgroundColor: Colors.red[600],
           title: is_searching?const Text("Movies Flix")
               :TextField(
+            controller:searchController ,
             style: const TextStyle(color: Colors.white),
             onChanged: (query){
               if(_selectedItem==0) {
@@ -53,10 +55,21 @@ class _HomePageState extends State<HomePage> {
                     Icons.clear,
                     color: Colors.white,
                   ),
-                  onPressed:()=>setState(() {
-                    NowPlayingList=BackupNowPlayingList;
-                    is_searching=true;
-                  })
+                  onPressed:(){
+                    if(_selectedItem==0) {
+                      NowPlayingList = BackupNowPlayingList;
+                      setState(() {
+                        searchController.clear();
+                        is_searching=true;
+                      });
+                    }else{
+                      TopRatedList = BackupTopRatedList;
+                      setState(() {
+                        searchController.clear();
+                        is_searching=true;
+                      });
+                    }
+                  }
                 ),
                 hintText: 'Search here...',
                 border: InputBorder.none),
@@ -121,7 +134,7 @@ class _HomePageState extends State<HomePage> {
     });
   }
   void searchNowPlayingList(String query){
-    List searchData=[];
+    List  searchData=[];
     for(Map x in NowPlayingList){
       if(x["title"].toString().toLowerCase().startsWith(query.toLowerCase())) {
         //print(x["title"]);
@@ -160,20 +173,72 @@ class _HomePageState extends State<HomePage> {
     }
     // print(searchData);
   }
-  Widget nowPlaying()=> ListView.builder(
-      itemCount: NowPlayingList.length,
-      itemBuilder: (context, movie) {
-        return MovieCard(imgUrl:  NowPlayingList[movie]['poster_path'],
-            title: NowPlayingList[movie]['original_title'],
-            desc: NowPlayingList[movie]['overview']
-            , id:  NowPlayingList[movie]['id']);
-      });
-  Widget topRated()=>ListView.builder(
-      itemCount: TopRatedList.length,
-      itemBuilder: (context, movie) {
-        return  MovieCard(imgUrl:  TopRatedList[movie]['poster_path'],
-            title: TopRatedList[movie]['original_title'],
-            desc: TopRatedList[movie]['overview']
-            , id:  TopRatedList[movie]['id']);
-      });
+  Widget nowPlaying()=> RefreshIndicator(onRefresh: getNowPlayingMovies,
+    child: ListView.builder(
+        itemCount: NowPlayingList.length,
+        itemBuilder: (context, index) {
+          final item = NowPlayingList[index]["title"].toString();
+          return Dismissible(
+            key: Key(item),
+            onDismissed: (direction){
+              setState(() {
+                NowPlayingList.removeAt(index);
+                Fluttertoast.showToast(
+                  msg: "$item dismissed",
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.BOTTOM,
+                );
+              });
+            },
+            background: Container(
+              alignment: Alignment.centerRight,
+              margin: EdgeInsets.all(10.0),
+              padding: EdgeInsets.only(right: 20),
+              color: Colors.red,
+              child: Icon(Icons.delete,color: Colors.white,),
+            ),
+            child: MovieCard(imgUrl:  NowPlayingList[index]['poster_path'],
+                title: NowPlayingList[index]['title'],
+                desc: NowPlayingList[index]['overview']
+                , id:  NowPlayingList[index]['id']),
+          );
+        }),
+  );
+  Widget topRated()=>RefreshIndicator(onRefresh: getTopRatedMovies,
+    child: ListView.builder(
+        itemCount: TopRatedList.length,
+        itemBuilder: (context, index) {
+          final item = TopRatedList[index]["title"].toString();
+          return  Dismissible(
+            key: Key(item),
+            onDismissed: (direction){
+              setState(() {
+                TopRatedList.removeAt(index);
+                Fluttertoast.showToast(
+                  msg: "$item dismissed",
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.BOTTOM,
+                );
+              });
+            },
+            background: Container(
+              alignment: Alignment.centerRight,
+              margin: EdgeInsets.all(10.0),
+              padding: EdgeInsets.only(right: 20),
+              color: Colors.red,
+              child: Icon(Icons.delete,color: Colors.white,),
+            ),
+            child: MovieCard(imgUrl:  TopRatedList[index]['poster_path'],
+                title: TopRatedList[index]['title'],
+                desc: TopRatedList[index]['overview']
+                , id:  TopRatedList[index]['id']),
+          );
+        }),
+  );
+  // Widget deleteBg()=>Container(
+  //   alignment: Alignment.centerRight,
+  //   padding: EdgeInsets.only(right: 20),
+  //   color: Colors.red,
+  //   child: Icon(Icons.delete,color: Colors.white,),
+  // );
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:movie_app/screens/movie_detail.dart';
 
+import 'movie_detail.dart';
 class MovieCard extends StatefulWidget {
   String imgUrl;
   String title;
@@ -51,6 +51,17 @@ class _MovieCardState extends State<MovieCard> {
           children: [
             Image.network(
               "https://image.tmdb.org/t/p/w185/${widget.imgUrl}",
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return Center(child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 70.0,horizontal: 50),
+                    child: CircularProgressIndicator(
+                      value: loadingProgress.expectedTotalBytes != null ?
+                      loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!.toDouble()
+                          : null,),
+                  ));
+                  // You can use LinearProgressIndicator or CircularProgressIndicator instead
+                },
               errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
               return const Text("Error !");}
             ),
