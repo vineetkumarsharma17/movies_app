@@ -51,7 +51,7 @@ class _MovieDetailState extends State<MovieDetail> {
       appBar: AppBar(
           backgroundColor: Colors.red[600],
           // backgroundColor: Colors.transparent,
-          title: loading?Text(movie['original_title']):Text("")),
+          title: loading?Text(movie['title']):Text("")),
       body:loading? SingleChildScrollView(
           child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -80,14 +80,14 @@ class _MovieDetailState extends State<MovieDetail> {
                   style: const TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(
-                  height: 20.0,
+                  height: 15.0,
                 ),
                 Row(
                   // crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Container(
-                      padding:const EdgeInsets.all(5.0),
+                      padding:const EdgeInsets.symmetric(horizontal: 10.0,vertical: 5),
                       decoration: BoxDecoration(
                           color: Colors.grey[700],
                           borderRadius:const BorderRadius.all(Radius.circular(15))),
@@ -97,19 +97,19 @@ class _MovieDetailState extends State<MovieDetail> {
                       ),
                     ),
                     Container(
-                      padding:const EdgeInsets.all(5.0),
+                      padding:const EdgeInsets.symmetric(horizontal: 10.0,vertical: 5),
                       decoration: BoxDecoration(
                           color: Colors.grey[700],
                           borderRadius:const BorderRadius.all(Radius.circular(15))),
-                      child:const Text(
-                        "Action",
+                      child: Text(
+                          movie['genres'][1]['name']??"",
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
                   ],
                 ),
                 const  SizedBox(
-                  height: 20.0,
+                  height: 15.0,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -117,7 +117,7 @@ class _MovieDetailState extends State<MovieDetail> {
                     Column(
                       children: [
                         Text(
-                          movie['genres'][1]['name'],
+                          movie['popularity'].toString(),
                           style: TextStyle(
                               fontSize: 15.0,
                               color: Colors.green[800],
@@ -164,6 +164,51 @@ class _MovieDetailState extends State<MovieDetail> {
                 const Divider(
                   // height: 4.0,
                   color: Colors.black,
+                ),
+                Row(
+                  // crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Container(
+                      padding:const EdgeInsets.symmetric(horizontal: 10.0,vertical: 5),
+                      decoration: BoxDecoration(
+                          color: Colors.grey[700],
+                          borderRadius:const BorderRadius.all(Radius.circular(15))),
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(right: 8.0),
+                            child: Icon(Icons.calendar_today,size: 14,color: Colors.white,),
+                          ),
+                          Text(
+                            movie['release_date'],
+                            style: const TextStyle(color: Colors.white),
+                          )
+                        ],
+                      ),
+                    ),
+                    Container(
+                      padding:const EdgeInsets.symmetric(horizontal: 10.0,vertical: 5),
+                      decoration: BoxDecoration(
+                          color: Colors.grey[700],
+                          borderRadius:const BorderRadius.all(Radius.circular(15))),
+                      child:  Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(right: 8.0),
+                            child: Icon(Icons.alarm,size: 14,color: Colors.white,),
+                          ),
+                          Text(
+                            movie['runtime'].toString()+" min",
+                            style: const TextStyle(color: Colors.white),
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20.0,
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
