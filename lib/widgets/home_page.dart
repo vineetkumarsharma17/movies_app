@@ -113,15 +113,15 @@ class _HomePageState extends State<HomePage> {
           });
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: (){
-          final themeChange = Provider.of<DarkThemeProvider>(context,listen: false);
-          setState(() {
-            themeChange.darkTheme = !dark;
-          });
-        },
-        child: Icon(CupertinoIcons.plus),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: (){
+      //     final themeChange = Provider.of<DarkThemeProvider>(context,listen: false);
+      //     setState(() {
+      //       themeChange.darkTheme = !dark;
+      //     });
+      //   },
+      //  // child: Icon(CupertinoIcons.plus),
+      // ),
     );
   }
   Future getNowPlayingMovies() async {
