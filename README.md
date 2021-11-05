@@ -3,7 +3,7 @@
 A new Flutter project.
 
 ## Getting Started
-<img src="https://github.com/vineetkumarsharma17/movies_app/blob/master/flutter_01.png",width="500"/>
+<img src="https://github.com/vineetkumarsharma17/movies_app/blob/master/flutter_01.png" alt="Girl in a jacket" width="500" height="600">
 
 This project is a starting point for a Flutter application.
 
