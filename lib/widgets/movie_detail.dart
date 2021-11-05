@@ -25,26 +25,13 @@ class _MovieDetailState extends State<MovieDetail> {
     setState(() {
       loading=true;
     });
-    // });
-    //
-    // print(movie['original_title']);
-    // print(movie['overview']);
-    // print(movie['popularity']);
-    // print(movie['vote_average']);
-    // print(movie['vote_average']);
-    // print(movie['vote_count']);
-    // print(movie['release_date']);
-    // isLoading = false;
   }
 
   @override
   void initState() {
     super.initState();
-    // print(widget.id);
-    // print("calling movie detail page");
     getMovieDetailById();
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,7 +63,7 @@ class _MovieDetailState extends State<MovieDetail> {
             child: Column(
               children: [
                 Text(
-                  movie["original_title"],
+                  movie["original_title"]??"",
                   style: const TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(
@@ -92,7 +79,7 @@ class _MovieDetailState extends State<MovieDetail> {
                           color: Colors.grey[700],
                           borderRadius:const BorderRadius.all(Radius.circular(15))),
                       child: Text(
-                        movie['genres'][0]['name'],
+                        movie['genres'][0]['name']??"",
                         style: const TextStyle(color: Colors.white),
                       ),
                     ),
@@ -117,7 +104,7 @@ class _MovieDetailState extends State<MovieDetail> {
                     Column(
                       children: [
                         Text(
-                          movie['popularity'].toString(),
+                          movie['popularity'].toString()??"",
                           style: TextStyle(
                               fontSize: 15.0,
                               color: Colors.green[800],
@@ -138,13 +125,13 @@ class _MovieDetailState extends State<MovieDetail> {
                         const  SizedBox(
                           height: 10,
                         ),
-                         Text("${movie['vote_average']}")
+                         Text("${movie['vote_average']}"??"")
                       ],
                     ),
                     Column(
                       children: [
                         Text(
-                          "${movie['vote_count']}",
+                          "${movie['vote_count']}"??"",
                           style:const TextStyle(
                               fontSize: 15.0,
                               color: Colors.blue,
@@ -181,7 +168,7 @@ class _MovieDetailState extends State<MovieDetail> {
                             child: Icon(Icons.calendar_today,size: 14,color: Colors.white,),
                           ),
                           Text(
-                            movie['release_date'],
+                            movie['release_date']??'',
                             style: const TextStyle(color: Colors.white),
                           )
                         ],
@@ -221,20 +208,12 @@ class _MovieDetailState extends State<MovieDetail> {
                     const  SizedBox(
                       height: 15.0,
                     ),
-                    Text(movie['overview'])
+                    Text(movie['overview']??"")
                   ],
                 )
               ],
             ),
           )
-          // Expanded(
-          //     child: Text(
-          //         "Minutes after Laurie Strode, her daughter Karen and granddaughter Allyson left masked monster Michael Myers caged and burning in Laurie's basement, Laurie is rushed to the hospital with life-threatening injuries, believing she finally killed her lifelong tormentor. But when Michael manages to free himself from Laurie's trap, his ritual bloodbath resumes. As Laurie fights her pain and prepares to defend herself against him, she inspires all of Haddonfield to rise up against their unstoppable monster. The Strode women join a group of other survivors of Michael's first rampage who decide to take matters into their own hands, "))
-
-          // Text(Movie['release_date']),
-          // Text(Movie['spoken_languages'][0]['name']),
-          // Text("Rating ${Movie['vote_average']}"),
-          // Text(Movie['overview']),
         ],
       )):const Center(child: CircularProgressIndicator(),),
     );

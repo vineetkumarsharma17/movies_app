@@ -1,9 +1,13 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:movie_app/screens/now_playing.dart';
-import 'package:movie_app/screens/top_rated.dart';
 import 'package:http/http.dart' as http;
+import 'package:movie_app/component/dark.dart';
+import 'package:movie_app/component/show_dilog.dart';
+import 'package:provider/provider.dart';
 
 import 'movie_card.dart';
 class HomePage extends StatefulWidget {
@@ -18,6 +22,7 @@ class _HomePageState extends State<HomePage> {
   bool isLoading = true;
   TextEditingController searchController=TextEditingController();
   String query='';
+  bool dark=false;
   int _selectedItem = 0;
   bool is_searching=true;
   @override
@@ -108,12 +113,30 @@ class _HomePageState extends State<HomePage> {
           });
         },
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){
+          final themeChange = Provider.of<DarkThemeProvider>(context,listen: false);
+          setState(() {
+            themeChange.darkTheme = !dark;
+          });
+        },
+        child: Icon(CupertinoIcons.plus),
+      ),
     );
   }
   Future getNowPlayingMovies() async {
     http.Response response = await http.get(Uri.parse(
         'https://api.themoviedb.org/3/movie/now_playing?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed'))
         .catchError((e){
+          String error= e.osError.toString();
+      if(e is SocketException)
+       error="No Internet connection";
+      if(e is TimeoutException)
+        error="Connection timeout";
+      dilogHelper.showMyDialog("Error!", error, context);
+          setState(() {
+            isLoading = false;
+          });
           print(e);
     });
     var jsonData = jsonDecode(response.body);
@@ -125,7 +148,13 @@ class _HomePageState extends State<HomePage> {
   }
   Future getTopRatedMovies() async {
     http.Response response = await http.get(Uri.parse(
-        'https://api.themoviedb.org/3/movie/top_rated?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed'));
+        'https://api.themoviedb.org/3/movie/top_rated?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed')
+    ).catchError((e){
+      setState(() {
+        isLoading = false;
+      });
+      print(e);
+    });
     var jsonData = jsonDecode(response.body);
     var movies = jsonData['results'];
     TopRatedList=BackupTopRatedList=movies;
